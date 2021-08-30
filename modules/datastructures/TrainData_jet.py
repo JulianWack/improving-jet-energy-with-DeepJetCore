@@ -111,8 +111,8 @@ class TrainData_jet(TrainData):
         #self.nsamples = len(features)
         
         #returns a list of feature arrays, a list of truth arrays and a list of weight arrays
-        #return [SimpleArray(feature_array,name="features0")], [SimpleArray(truth_array,name="truth0")], []
-        return [feature_array, consti_pts_array], [truth_array], [] 
+        return [SimpleArray(feature_array,name="features"), SimpleArray(consti_pts_array,name="consti_pt")], [SimpleArray(truth_array,name="truth")], []
+        #return [feature_array, consti_pts_array], [truth_array], [] 
      
         
     def writeOutPrediction(self, predicted, features, truth, weights, outfilename, inputfile):
