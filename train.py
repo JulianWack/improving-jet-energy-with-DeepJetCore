@@ -22,7 +22,7 @@ def my_model(Inputs,otheroption):
     # 3 prediction classes
     # x = Dense(3, activation='softmax')(x)
 
-    predictions = [x]
+    predictions = [x, Inputs[1]]
     return Model(inputs=Inputs, outputs=predictions)
 
 
