@@ -100,11 +100,12 @@ class TrainData_jet(TrainData):
                 consti_pts_array[i] = c
                 
         feature_array = feature_array[keep_mask]
-        consti_pts_array = consti_pts_array[keep_mask]
+        consti_pts_array = np.expand_dims(consti_pts_array[keep_mask], axis=2)
         
         # make truth array
         truth_array = np.array(truth, dtype='float32', order='C')
         truth_array = truth_array[keep_mask]
+        #truth_array = np.expand_dims(truth_array[keep_mask], axis=1)
         
         
         print('feature_array',feature_array.shape)
@@ -114,7 +115,7 @@ class TrainData_jet(TrainData):
         return [SimpleArray(feature_array,name="features"), SimpleArray(consti_pts_array,name="consti_pt")], [SimpleArray(truth_array,name="truth")], []
         #return [feature_array, consti_pts_array], [truth_array], [] 
      
-        
+       
     def writeOutPrediction(self, predicted, features, truth, weights, outfilename, inputfile):
         '''Defines how to write out the prediction. Here will be a list of probabilities.'''
         from root_numpy import array2root
