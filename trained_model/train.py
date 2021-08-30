@@ -1,9 +1,9 @@
 from DeepJetCore.training.training_base import training_base
 import keras
 from keras.models import Model
-from keras.layers import Dense, Conv2D, Flatten, BatchNormalization #etc
+from keras.layers import Dense, Conv2D, Flatten, BatchNormalization, Concatenate #etc
 
-from loss_function import my_loss
+from Losses import my_loss
 
 def my_model(Inputs,otheroption):
 
@@ -22,7 +22,7 @@ def my_model(Inputs,otheroption):
     # 3 prediction classes
     # x = Dense(3, activation='softmax')(x)
 
-    predictions = [x]
+    predictions = Concatenate()([x, Inputs[1]])
     return Model(inputs=Inputs, outputs=predictions)
 
 
