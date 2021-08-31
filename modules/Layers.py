@@ -25,15 +25,19 @@ class GravNet_simple(tf.keras.layers.Layer):
         
         with tf.name_scope(self.name + "/1/"):
             self.input_feature_transform = tf.keras.layers.Dense(n_propagate)
+        with tf.name_scope(self.name + "/2/"):
             self.input_spatial_transform = tf.keras.layers.Dense(n_dimensions)
+        with tf.name_scope(self.name + "/3/"):
             self.output_feature_transform = tf.keras.layers.Dense(n_filters, activation='tanh')
+
 
     def build(self, input_shape):
         with tf.name_scope(self.name + "/1/"):
             self.input_feature_transform.build(input_shape)
+        with tf.name_scope(self.name + "/2/"):
             self.input_spatial_transform.build(input_shape)
-            self.output_feature_transform.build((input_shape[0], input_shape[1], 
-                                             input_shape[2] + self.input_feature_transform.units * 2))
+        with tf.name_scope(self.name + "/3/"):
+            self.output_feature_transform.build((input_shape[0], input_shape[1], input_shape[2] + self.input_feature_transform.units * 2))
  
         super(GravNet_simple, self).build(input_shape)
         
