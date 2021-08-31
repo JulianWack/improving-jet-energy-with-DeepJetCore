@@ -4,10 +4,8 @@ from keras.layers import Layer
 import keras.backend as K
 import tensorflow as tf
 from caloGraphNN import *
-from caloGraphNN_keras import GlobalExchange
 
 global_layers_list = {}
-global_layers_list['GlobalExchange']=GlobalExchange  
 
 
 class GravNet_simple(tf.keras.layers.Layer):
