@@ -13,7 +13,7 @@ def my_loss(y_true, y_pred):
     consti_pt_corrected = consti_pt*pt_correction_factor
     jet_pt = tf.reduce_sum(consti_pt_corrected, axis=1)
     
-    loss = (jet_pt-y_true)**2
+    loss = ((jet_pt-y_true)/y_true)**2
     
     return tf.reduce_mean(loss)
 
