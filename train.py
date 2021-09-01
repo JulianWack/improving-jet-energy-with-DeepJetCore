@@ -12,17 +12,22 @@ def my_model(Inputs,otheroption):
 
     x = Inputs[0] #this is the self.x list from the TrainData data structure
     
-    GravNet_layer1 = GravNet_simple(n_propagate = 32, n_dimensions = 3, n_neighbours = 10, n_filters = 32)
+    GravNet_layer1 = GravNet_simple(n_propagate = 64, n_dimensions = 2, n_neighbours = 20, n_filters = 64)
     GravNet_layer1.build(x.shape)
     x = GravNet_layer1.call(x)
 
-    x = Dense(16, activation='relu', use_bias=True)(x)
-
-    GravNet_layer2 = GravNet_simple(n_propagate = 64, n_dimensions = 5, n_neighbours = 5, n_filters = 64)
+    GravNet_layer2 = GravNet_simple(n_propagate = 32, n_dimensions = 3, n_neighbours = 15, n_filters = 32)
     GravNet_layer2.build(x.shape)
     x = GravNet_layer2.call(x)
 
-    # x = Dense(1, activation='relu', use_bias=False)(x)
+    x = Dense(8, activation='tanh', use_bias=False)(x)
+
+    GravNet_layer2 = GravNet_simple(n_propagate = 8, n_dimensions = 3, n_neighbours = 10, n_filters = 16)
+    GravNet_layer2.build(x.shape)
+    x = GravNet_layer2.call(x)
+
+    x = Dense(4, activation='softmax', use_bias=False)(x)
+
     # x = BatchNormalization(momentum=0.9)(x)
     # x = Conv2D(8,(4,4),activation='relu', padding='same')(x)
     # x = Conv2D(8,(4,4),activation='relu', padding='same')(x)
@@ -46,13 +51,13 @@ if not train.modelSet(): # allows to resume a stopped/killed training. Only sets
 
     train.setModel(my_model,otheroption=1)
 
-    train.compileModel(learningrate=0.03,
+    train.compileModel(learningrate=0.01,
                    loss=my_loss)
 
 print(train.keras_model.summary())
 
 
-model,history = train.trainModel(nepochs=7,
+model,history = train.trainModel(nepochs=5,
                                  batchsize=5,
                                  checkperiod=1, # saves a checkpoint model every N epochs
                                  verbose=1)
