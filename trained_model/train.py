@@ -20,7 +20,7 @@ def my_model(Inputs,otheroption):
     GravNet_layer2.build(x.shape)
     x = GravNet_layer2.call(x)
 
-    x = Dense(8, activation='tanh', use_bias=False)(x)
+    x = Dense(8, use_bias=False)(x)
 
     GravNet_layer2 = GravNet_simple(n_propagate = 8, n_dimensions = 3, n_neighbours = 10, n_filters = 16)
     GravNet_layer2.build(x.shape)
@@ -57,9 +57,9 @@ if not train.modelSet(): # allows to resume a stopped/killed training. Only sets
 print(train.keras_model.summary())
 
 
-model,history = train.trainModel(nepochs=5,
-                                 batchsize=400,
-                                 checkperiod=1, # saves a checkpoint model every N epochs
+model,history = train.trainModel(nepochs=30,
+                                 batchsize=5,
+                                 checkperiod=10, # saves a checkpoint model every N epochs
                                  verbose=1)
 
 print('Since the training is done, use the predict.py script to predict the model output on your test sample,'\
