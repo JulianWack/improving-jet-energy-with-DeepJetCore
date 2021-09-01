@@ -2,7 +2,7 @@ from DeepJetCore.training.training_base import training_base
 import tensorflow as tf
 import keras
 from keras.models import Model
-from keras.layers import Dense, Conv2D, Flatten, BatchNormalization, Concatenate #etc
+from keras.layers import Dense, Flatten, BatchNormalization, Concatenate #etc
 
 from Losses import my_loss
 from Layers import GravNet_simple
@@ -11,10 +11,18 @@ from Layers import GravNet_simple
 def my_model(Inputs,otheroption):
 
     x = Inputs[0] #this is the self.x list from the TrainData data structure
+    
+    GravNet_layer1 = GravNet_simple(n_propagate = 32, n_dimensions = 3, n_neighbours = 10, n_filters = 32)
+    GravNet_layer1.build(x.shape)
+    x = GravNet_layer1.call(x)
+
+    x = Dense(16, activation='relu', use_bias=True)(x)
+
+    GravNet_layer2 = GravNet_simple(n_propagate = 64, n_dimensions = 5, n_neighbours = 5, n_filters = 64)
+    GravNet_layer2.build(x.shape)
+    x = GravNet_layer2.call(x)
+
     # x = Dense(1, activation='relu', use_bias=False)(x)
-    New_Layer = GravNet_simple(n_neighbours = 20, n_dimensions = 3, n_filters = 64, n_propagate = 64)
-    New_Layer.build(x.shape)
-    x = New_Layer.call(x)
     # x = BatchNormalization(momentum=0.9)(x)
     # x = Conv2D(8,(4,4),activation='relu', padding='same')(x)
     # x = Conv2D(8,(4,4),activation='relu', padding='same')(x)
@@ -44,8 +52,8 @@ if not train.modelSet(): # allows to resume a stopped/killed training. Only sets
 print(train.keras_model.summary())
 
 
-model,history = train.trainModel(nepochs=1,
-                                 batchsize=1,
+model,history = train.trainModel(nepochs=7,
+                                 batchsize=5,
                                  checkperiod=1, # saves a checkpoint model every N epochs
                                  verbose=1)
 
