@@ -12,7 +12,7 @@ def my_model(Inputs,otheroption):
 
     x = Inputs[0] #this is the self.x list from the TrainData data structure
     
-    GravNet_layer1 = GravNet_simple(n_propagate = 64, n_dimensions = 2, n_neighbours = 20, n_filters = 64)
+    GravNet_layer1 = GravNet_simple(n_propagate = 64, n_dimensions = 3, n_neighbours = 15, n_filters = 64)
     GravNet_layer1.build(x.shape)
     x = GravNet_layer1.call(x)
 
@@ -20,13 +20,13 @@ def my_model(Inputs,otheroption):
     GravNet_layer2.build(x.shape)
     x = GravNet_layer2.call(x)
 
+    #x = Dense(8, use_bias=False)(x)
+
+    #GravNet_layer2 = GravNet_simple(n_propagate = 8, n_dimensions = 3, n_neighbours = 10, n_filters = 16)
+    #GravNet_layer2.build(x.shape)
+    #x = GravNet_layer2.call(x)
+
     x = Dense(8, use_bias=False)(x)
-
-    GravNet_layer2 = GravNet_simple(n_propagate = 8, n_dimensions = 3, n_neighbours = 10, n_filters = 16)
-    GravNet_layer2.build(x.shape)
-    x = GravNet_layer2.call(x)
-
-    x = Dense(4, use_bias=False)(x)
 
     # x = BatchNormalization(momentum=0.9)(x)
     # x = Conv2D(8,(4,4),activation='relu', padding='same')(x)
@@ -51,15 +51,15 @@ if not train.modelSet(): # allows to resume a stopped/killed training. Only sets
 
     train.setModel(my_model,otheroption=1)
 
-    train.compileModel(learningrate=1e-4,
+    train.compileModel(learningrate=1e-5,
                    loss=my_loss)
 
 print(train.keras_model.summary())
 
 
-model,history = train.trainModel(nepochs=30,
+model,history = train.trainModel(nepochs=10,
                                  batchsize=5,
-                                 checkperiod=10, # saves a checkpoint model every N epochs
+                                 checkperiod=1, # saves a checkpoint model every N epochs
                                  verbose=1)
 
 print('Since the training is done, use the predict.py script to predict the model output on your test sample,'\

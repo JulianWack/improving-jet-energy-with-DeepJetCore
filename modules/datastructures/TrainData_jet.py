@@ -23,7 +23,7 @@ class TrainData_jet(TrainData):
         padding with zeros is used. Also not that only recojets which have a corresponding genjet are considered. The pt of the genjets in stored in truth_array.
         '''
         
-        max_idx = 20
+        max_idx = 500
         print('Reading {} events from {}'.format(max_idx, filename))
         event_tree = uproot.open(filename)['Events']
         
