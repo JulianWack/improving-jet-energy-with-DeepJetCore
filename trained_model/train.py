@@ -26,7 +26,7 @@ def my_model(Inputs,otheroption):
     GravNet_layer2.build(x.shape)
     x = GravNet_layer2.call(x)
 
-    x = Dense(4, activation='softmax', use_bias=False)(x)
+    x = Dense(4, use_bias=False)(x)
 
     # x = BatchNormalization(momentum=0.9)(x)
     # x = Conv2D(8,(4,4),activation='relu', padding='same')(x)
@@ -51,14 +51,14 @@ if not train.modelSet(): # allows to resume a stopped/killed training. Only sets
 
     train.setModel(my_model,otheroption=1)
 
-    train.compileModel(learningrate=0.01,
+    train.compileModel(learningrate=1e-4,
                    loss=my_loss)
 
 print(train.keras_model.summary())
 
 
 model,history = train.trainModel(nepochs=5,
-                                 batchsize=5,
+                                 batchsize=400,
                                  checkperiod=1, # saves a checkpoint model every N epochs
                                  verbose=1)
 
