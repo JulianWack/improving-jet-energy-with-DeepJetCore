@@ -45,9 +45,9 @@ if not train.modelSet(): # allows to resume a stopped/killed training. Only sets
 print(train.keras_model.summary())
 
 
-model,history = train.trainModel(nepochs=30,
-                                 batchsize=5,
-                                 checkperiod=5, # saves a checkpoint model every N epochs
+model,history = train.trainModel(nepochs=50,
+                                 batchsize=50,
+                                 checkperiod=10, # saves a checkpoint model every N epochs
                                  verbose=1)
 
 print('Since the training is done, use the predict.py script to predict the model output on your test sample,'\
