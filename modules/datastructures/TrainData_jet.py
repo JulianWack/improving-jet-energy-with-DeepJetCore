@@ -119,8 +119,27 @@ class TrainData_jet(TrainData):
      
        
     def writeOutPrediction(self, predicted, features, truth, weights, outfilename, inputfile):
-        '''Defines how to write out the prediction. Here will be a list of probabilities.'''
-        from root_numpy import array2root
-        out = np.core.records.fromarrays(predicted[0].transpose(), names='prob_isA, prob_isB, prob_isC')
-        
-        array2root(out, outfilename, 'tree')
+        '''Produce histogram for normalized difference in pt.'''
+        import matplotlib.pyplot as plt
+        #plt.style.use("scientific.mplstyle")
+        import tensorflow as tf
+        #pred_pt = tf.reshape(predicted, [-1]).numpy() # make flat np array
+        gen_pt = tf.reshape(truth, [-1]).numpy() # make flat np array
+        consti_pt = features[1]
+        consti_pt_corrected = consti_pt*np.array(predicted)
+        jet_pt = np.sum(consti_pt_corrected)
+        #jet_pt = tf.reduce_sum(consti_pt_corrected, axis=1)
+    
+        norm_dpt = ((jet_pt-gen_pt)/gen_pt)**2
+        fig = plt.figure(figsize=(8,6))
+
+        plt.hist(norm_dpt, bins=100, histtype='step')
+        text = "{} compared jets".format(len(norm_dpt))
+        plt.yscale('log')
+        plt.title("Normalized $\Delta pt$")
+        plt.text(0.9, 0.9, text, ha='right', va='top', transform = plt.gca().transAxes)
+        plt.ylabel("Counts")
+        plt.xlabel("$\\frac{recojet_{pt} - genjet_{pt}}{genjet_{pt}}$")
+
+        fig.savefig("testing_output/Delta_pt_corrected_pt.pdf")
+        return
