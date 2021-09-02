@@ -10,8 +10,8 @@ from Layers import GravNet_simple
 
 def my_model(Inputs,otheroption):
 
-    x = Inputs[0] #this is the self.x list from the TrainData data structure
-    
+    x = Inputs[0] # feature array
+
     GravNet_layer1 = GravNet_simple(n_propagate = 64, n_dimensions = 3, n_neighbours = 15, n_filters = 64)
     GravNet_layer1.build(x.shape)
     x = GravNet_layer1.call(x)
@@ -28,20 +28,8 @@ def my_model(Inputs,otheroption):
 
     x = Dense(8, use_bias=False)(x)
 
-    # x = BatchNormalization(momentum=0.9)(x)
-    # x = Conv2D(8,(4,4),activation='relu', padding='same')(x)
-    # x = Conv2D(8,(4,4),activation='relu', padding='same')(x)
-    # x = Conv2D(8,(4,4),activation='relu', padding='same')(x)
-    # x = BatchNormalization(momentum=0.9)(x)
-    # x = Conv2D(8,(4,4),strides=(2,2),activation='relu', padding='valid')(x)
-    # x = Conv2D(4,(4,4),strides=(2,2),activation='relu', padding='valid')(x)
-    # x = Flatten()(x)
-    # x = Dense(32, activation='relu')(x)
+    predictions = Concatenate()([x, Inputs[1]]) # Inputs[1] is PF pt
 
-    # 3 prediction classes
-    # x = Dense(3, activation='softmax')(x)
-
-    predictions = Concatenate()([x, Inputs[1]])
     return Model(inputs=Inputs, outputs=predictions)
 
 
