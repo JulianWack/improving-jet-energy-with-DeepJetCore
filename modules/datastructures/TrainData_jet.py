@@ -1,4 +1,4 @@
-from DeepJetCore.TrainData import TrainData, fileTimeOut
+from DeepJetCore.TrainData import TrainData
 from DeepJetCore import SimpleArray
 
 import numpy as np
@@ -10,9 +10,7 @@ class TrainData_jet(TrainData):
     def __init__(self):
         TrainData.__init__(self)
         # no class member is mandatory
-        self.description = "This is a TrainData example file. Having a description string is not a bad idea (but not mandatory), e.g. for describing the array structure."
-        #define any other (configuration) members that seem useful
-        self.someusefulemember = "something you might need later"
+        self.description = "Class to convert ROOT files into network input and to produce prediction histogram."
             
         
     def convertFromSourceFile(self, filename, weighterobjects, istraining):
@@ -37,7 +35,6 @@ class TrainData_jet(TrainData):
         recojet_etas = event_tree['Jet_eta'].array(entry_stop=max_idx, library='np')
         recojet_phis = event_tree['Jet_phi'].array(entry_stop=max_idx, library='np')
         recojet_masses = event_tree['Jet_mass'].array(entry_stop=max_idx, library='np')
-        #raw_pt_factor = 1-event_tree['Jet_rawFactor'].array(entry_stop=max_idx, library='np')
         recojet_nconsti = event_tree['Jet_nConstituents'].array(entry_stop=max_idx, library='np')
         recojet_consti = event_tree['PF_jetsIdx'].array(entry_stop=max_idx, library='np')
 
@@ -58,7 +55,7 @@ class TrainData_jet(TrainData):
             return truth
         
         
-        # find jets and fill feature and truth array
+        # fill feature and truth array
         features, truth = [], []
         consti_pts = []
         max_nconsti = 0
@@ -107,15 +104,12 @@ class TrainData_jet(TrainData):
         # make truth array
         truth_array = np.array(truth, dtype='float32', order='C')
         truth_array = truth_array[keep_mask]
-        #truth_array = np.expand_dims(truth_array[keep_mask], axis=1)
-        
+                
         
         print('feature_array',feature_array.shape)
-        #self.nsamples = len(features)
         
         #returns a list of feature arrays, a list of truth arrays and a list of weight arrays
         return [SimpleArray(feature_array,name="features"), SimpleArray(consti_pts_array,name="consti_pt")], [SimpleArray(truth_array,name="truth")], []
-        #return [feature_array, consti_pts_array], [truth_array], [] 
      
        
     def writeOutPrediction(self, predicted, features, truth, weights, outfilename, inputfile):
