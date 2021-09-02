@@ -8,9 +8,7 @@ p3
 aVmyNanoProdMc_NANO_n_3.djctd
 p4
 a.(lp0
-V/eos/user/c/clange/PFNano/myNanoProdMc_NANO.root
-p1
-a.cTrainData_jet
+.cTrainData_jet
 TrainData_jet
 p0
 .(dp0
