@@ -117,14 +117,22 @@ class TrainData_jet(TrainData):
         import matplotlib.pyplot as plt
         #plt.style.use("scientific.mplstyle")
         import tensorflow as tf
-        #pred_pt = tf.reshape(predicted, [-1]).numpy() # make flat np array
-        gen_pt = tf.reshape(truth, [-1]).numpy() # make flat np array
-        consti_pt = features[1]
-        consti_pt_corrected = consti_pt*np.array(predicted)
-        jet_pt = np.sum(consti_pt_corrected)
-        #jet_pt = tf.reduce_sum(consti_pt_corrected, axis=1)
-    
-        norm_dpt = ((jet_pt-gen_pt)/gen_pt)**2
+                
+        gen_pt = np.array(truth)
+        NN_out = np.array(predicted)
+        pt_correction_factor = tf.reduce_mean(NN_out[:,:,:,0:-1], axis=3) # note last element in particle features is the PF pt. Remaining ones are result from network
+        consti_pt = NN_out[:,:,:,-1]
+        consti_pt_corrected = consti_pt*pt_correction_factor
+        jet_pt = tf.reduce_sum(consti_pt_corrected, axis=2)
+        
+        print("pt_correction factor shape", pt_correction_factor.shape)
+        print("consti_pt shape", consti_pt.shape)
+        print("jet_pt shape", jet_pt.shape)
+        print("gen_pt shape", gen_pt.shape)
+        
+        
+        norm_dpt = (jet_pt-gen_pt)/gen_pt
+        #print(norm_dpt)
         fig = plt.figure(figsize=(8,6))
 
         plt.hist(norm_dpt, bins=100, histtype='step')
