@@ -21,7 +21,7 @@ class TrainData_jet(TrainData):
         padding with zeros is used. Also not that only recojets which have a corresponding genjet are considered. The pt of the genjets in stored in truth_array.
         '''
         
-        max_idx = 5000
+        max_idx = 20000
         print('Reading {} events from {}'.format(max_idx, filename))
         event_tree = uproot.open(filename)['Events']
         
@@ -127,14 +127,8 @@ class TrainData_jet(TrainData):
         consti_pt_corrected = consti_pt*pt_correction_factor
         jet_pt = tf.reduce_sum(consti_pt_corrected, axis=2)
         
-        print("pt_correction factor shape", pt_correction_factor.shape)
-        print("consti_pt shape", consti_pt.shape)
-        print("jet_pt shape", jet_pt.shape)
-        print("gen_pt shape", gen_pt.shape)
-        
-        
         norm_dpt = ((jet_pt-gen_pt)/gen_pt).numpy().flatten()
-        #print(norm_dpt)
+        
         fig = plt.figure(figsize=(8,6))
 
         plt.hist(norm_dpt, bins=100, histtype='step')
