@@ -133,7 +133,7 @@ class TrainData_jet(TrainData):
         print("gen_pt shape", gen_pt.shape)
         
         
-        norm_dpt = ((jet_pt-gen_pt)/gen_pt).numpy()
+        norm_dpt = ((jet_pt-gen_pt)/gen_pt).numpy().flatten()
         #print(norm_dpt)
         fig = plt.figure(figsize=(8,6))
 
