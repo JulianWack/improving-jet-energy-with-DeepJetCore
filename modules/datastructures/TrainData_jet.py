@@ -21,7 +21,7 @@ class TrainData_jet(TrainData):
         padding with zeros is used. Also not that only recojets which have a corresponding genjet are considered. The pt of the genjets in stored in truth_array.
         '''
         
-        max_idx = 20000
+        max_idx = 5000
         print('Reading {} events from {}'.format(max_idx, filename))
         event_tree = uproot.open(filename)['Events']
         
@@ -122,7 +122,7 @@ class TrainData_jet(TrainData):
         NN_out = np.array(predicted)
         # note that network output is (batch size, # jets, # units in final dense layer+1)
         # the +1 is due to the PF pt passed thoruh the network, which will always be the last element
-        pt_correction_factor = tf.reduce_mean(NN_out[:,:,:,0:-1], axis=3)
+        pt_correction_factor = (tf.math.cosh(tf.reduce_mean(NN_out[:,:,:,0:-1], axis=3))-1)*2
         consti_pt = NN_out[:,:,:,-1]
         consti_pt_corrected = consti_pt*pt_correction_factor
         jet_pt = tf.reduce_sum(consti_pt_corrected, axis=2)

@@ -9,7 +9,7 @@ def my_loss(y_true, y_pred):
     The loss is then found by the mean of the square errors for all jets.'''
     # note that network output is (batch size, # jets, # units in final dense layer+1)
     # the +1 is due to the PF pt passed thoruh the network, which will always be the last element
-    pt_correction_factor = tf.reduce_mean(y_pred[:,:,0:-1], axis=2)
+    pt_correction_factor = (tf.math.cosh(tf.reduce_mean(y_pred[:,:,0:-1], axis=2))-1)*2
     consti_pt = y_pred[:,:,-1]
     consti_pt_corrected = consti_pt*pt_correction_factor
     jet_pt = tf.reduce_sum(consti_pt_corrected, axis=1)
