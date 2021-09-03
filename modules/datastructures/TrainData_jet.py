@@ -21,7 +21,7 @@ class TrainData_jet(TrainData):
         padding with zeros is used. Also not that only recojets which have a corresponding genjet are considered. The pt of the genjets in stored in truth_array.
         '''
         
-        max_idx = 5000
+        max_idx = 20000
         print('Reading {} events from {}'.format(max_idx, filename))
         event_tree = uproot.open(filename)['Events']
         
@@ -137,7 +137,7 @@ class TrainData_jet(TrainData):
         plt.title("Normalized $\Delta pt$")
         plt.text(0.9, 0.9, text, ha='right', va='top', transform = plt.gca().transAxes)
         plt.ylabel("Counts")
-        plt.xlabel("$\\frac{recojet_{pt} - genjet_{pt}}{genjet_{pt}}$")
+        plt.xlabel("$\\frac{jet_{pt} - genjet_{pt}}{genjet_{pt}}$")
 
-        fig.savefig("testing_output/Delta_pt_corrected_pt.pdf")
+        fig.savefig("testing_output/regression_error.pdf")
         return
